@@ -59,27 +59,32 @@ class ZabbixInventory(object):
             conf_path = os.path.dirname(os.path.realpath(__file__)) + '/zabbix.ini'
         if os.path.exists(conf_path):
             config.read(conf_path)
-        # server
-        if config.has_option('zabbix', 'server'):
-            self.zabbix_server = config.get('zabbix', 'server')
-
-        # login
-        if config.has_option('zabbix', 'username'):
-            self.zabbix_username = config.get('zabbix', 'username')
-        if config.has_option('zabbix', 'password'):
-            self.zabbix_password = config.get('zabbix', 'password')
-        # ssl certs
-        if config.has_option('zabbix', 'validate_certs'):
-            if config.get('zabbix', 'validate_certs') in ['false', 'False', False]:
-                self.validate_certs = False
-        # host inventory
-        if config.has_option('zabbix', 'read_host_inventory'):
-            if config.get('zabbix', 'read_host_inventory') in ['true', 'True', True]:
-                self.read_host_inventory = True
-        # host interface
-        if config.has_option('zabbix', 'use_host_interface'):
-            if config.get('zabbix', 'use_host_interface') in ['false', 'False', False]:
-                self.use_host_interface = False
+            # server
+            if config.has_option('zabbix', 'server'):
+                self.zabbix_server = config.get('zabbix', 'server')
+            # login
+            if config.has_option('zabbix', 'username'):
+                self.zabbix_username = config.get('zabbix', 'username')
+            if config.has_option('zabbix', 'password'):
+                self.zabbix_password = config.get('zabbix', 'password')
+            # ssl certs
+            if config.has_option('zabbix', 'validate_certs'):
+                if config.get('zabbix', 'validate_certs') in ['false', 'False', False]:
+                    self.validate_certs = False
+            # host inventory
+            if config.has_option('zabbix', 'read_host_inventory'):
+                if config.get('zabbix', 'read_host_inventory') in ['true', 'True', True]:
+                    self.read_host_inventory = True
+            # host interface
+            if config.has_option('zabbix', 'use_host_interface'):
+                if config.get('zabbix', 'use_host_interface') in ['false', 'False', False]:
+                    self.use_host_interface = False
+        else:
+            self.zabbix_server = os.environ.get("ZABBIX_SERVER")
+            self.zabbix_username = os.environ.get("ZABBIX_USERNAME")
+            self.zabbix_password = os.environ.get("ZABBIX_PASSWORD")
+            self.validate_certs = False
+            self.read_host_inventory = True
 
     def read_cli(self):
         parser = argparse.ArgumentParser()
